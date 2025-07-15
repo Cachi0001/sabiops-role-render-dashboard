@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, FileText, Users, Package, CreditCard, Settings, TrendingUp, Crown } from 'lucide-react';
+import { Plus, FileText, Users, Package, CreditCard, Settings, TrendingUp, Crown, BarChart3, History } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 interface ModernQuickActionsProps {
@@ -62,6 +62,20 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onUpgrad
             action: () => console.log('View Payments') 
           },
           { 
+            icon: BarChart3, 
+            label: 'Analytics', 
+            gradient: 'from-green-500 to-teal-500',
+            bgGradient: 'from-green-50 to-teal-50',
+            action: () => window.location.href = '/analytics'
+          },
+          { 
+            icon: History, 
+            label: 'Transactions', 
+            gradient: 'from-blue-500 to-indigo-500',
+            bgGradient: 'from-blue-50 to-indigo-50',
+            action: () => window.location.href = '/transactions'
+          },
+          { 
             icon: Users, 
             label: 'Manage Team', 
             gradient: 'from-teal-500 to-green-500',
@@ -93,6 +107,13 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onUpgrad
             gradient: 'from-indigo-500 to-blue-500',
             bgGradient: 'from-indigo-50 to-blue-50',
             action: () => console.log('View Payments') 
+          },
+          { 
+            icon: History, 
+            label: 'Transactions', 
+            gradient: 'from-blue-500 to-indigo-500',
+            bgGradient: 'from-blue-50 to-indigo-50',
+            action: () => window.location.href = '/transactions'
           },
         ];
 
