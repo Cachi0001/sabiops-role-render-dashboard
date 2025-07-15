@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Bell, MessageCircle, Crown, Search, Menu, X, Bed, BarChart3, History } from 'lucide-react';
+import { Bell, MessageCircle, Crown, Search, Menu, X, Bed, BarChart3, History, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
@@ -8,7 +7,7 @@ import { MasterSearchBar } from '@/components/search/MasterSearchBar';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
 export const DashboardHeader = () => {
-  const { user, role, subscription } = useAuth();
+  const { user, role, subscription, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleTwitterClick = () => {
@@ -35,6 +34,11 @@ export const DashboardHeader = () => {
       return;
     }
     window.location.href = '/transactions';
+  };
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/';
   };
 
   return (
@@ -118,6 +122,20 @@ export const DashboardHeader = () => {
               </Button>
             </div>
 
+            {/* Logout - Desktop */}
+            <div className="hidden md:block">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="text-white hover:text-green-100 hover:bg-green-600 flex items-center gap-1"
+                title="Logout"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline text-xs">Logout</span>
+              </Button>
+            </div>
+
             {/* Notifications */}
             <div className="hidden md:block">
               <NotificationCenter />
@@ -158,7 +176,7 @@ export const DashboardHeader = () => {
                     </div>
                   )}
                   
-                  {/* Analytics & Transactions for Mobile */}
+                  {/* Reports & Analytics for Mobile */}
                   <div className="space-y-2">
                     <h3 className="text-sm font-medium text-green-100">Reports & Analytics</h3>
                     <Button
@@ -205,6 +223,18 @@ export const DashboardHeader = () => {
                     >
                       <MessageCircle className="h-4 w-4 mr-2" />
                       Contact Support
+                    </Button>
+                  </div>
+                  
+                  {/* Logout */}
+                  <div className="pt-2 border-t border-green-400">
+                    <Button
+                      variant="ghost"
+                      onClick={handleLogout}
+                      className="w-full justify-start text-white hover:text-green-100 hover:bg-green-600"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
                     </Button>
                   </div>
                   
