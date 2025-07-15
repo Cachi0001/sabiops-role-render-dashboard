@@ -175,6 +175,31 @@
   .bg-gradient-green {
     @apply bg-gradient-to-r from-green-100 to-green-200;
   }
+
+  /* New creative gradients */
+  .text-gradient-purple {
+    @apply bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-blue {
+    @apply bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-orange {
+    @apply bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-creative {
+    @apply bg-gradient-to-br from-green-500 via-purple-500 to-blue-500;
+  }
+
+  .bg-gradient-warm {
+    @apply bg-gradient-to-br from-orange-400 via-red-500 to-pink-500;
+  }
+
+  .bg-gradient-cool {
+    @apply bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600;
+  }
   
   /* Animation utilities */
   .animate-slide-up {
@@ -184,9 +209,48 @@
   .animate-fade-in {
     animation: fade-in 0.3s ease-out;
   }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
+  }
   
   /* Mobile-specific utilities */
   .touch-target {
     @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-white bg-opacity-80 backdrop-blur-sm border border-white border-opacity-20;
+  }
+}
+
+/* Additional keyframes for new animations */
+@keyframes scale-in {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive font sizes */
+@media (max-width: 640px) {
+  .responsive-text-lg {
+    @apply text-base;
+  }
+  .responsive-text-xl {
+    @apply text-lg;
+  }
+  .responsive-text-2xl {
+    @apply text-xl;
   }
 }
