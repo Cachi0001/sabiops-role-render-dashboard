@@ -1,13 +1,15 @@
 
-import React from 'react';
-import { Bell, MessageCircle, Crown, Search, Menu } from 'lucide-react';
+import React, { useState } from 'react';
+import { Bell, MessageCircle, Crown, Search, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 import { MasterSearchBar } from '@/components/search/MasterSearchBar';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
 export const DashboardHeader = () => {
   const { user, role, subscription } = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleTwitterClick = () => {
     window.open('https://x.com/Caleb0533', '_blank');
@@ -18,19 +20,19 @@ export const DashboardHeader = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-white to-green-50 border-b border-green-200 sticky top-0 z-40">
+    <div className="bg-green-800 border-b border-green-700 sticky top-0 z-40">
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo/Brand */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-600 to-green-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">S</span>
+            <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-300 rounded-lg flex items-center justify-center">
+              <span className="text-green-900 font-bold text-sm">S</span>
             </div>
             <div className="hidden md:block">
-              <h1 className="text-lg font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-lg font-bold text-white">
                 SabiOps
               </h1>
-              <p className="text-xs text-green-600">Business Dashboard</p>
+              <p className="text-xs text-green-200">Business Dashboard</p>
             </div>
           </div>
 
@@ -41,44 +43,107 @@ export const DashboardHeader = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-2">
-            {/* Social Links */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleTwitterClick}
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-              title="Follow our CEO"
-            >
-              <MessageCircle className="h-4 w-4" />
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleWhatsAppClick}
-              className="text-green-600 hover:text-green-700 hover:bg-green-50"
-              title="Contact us for feedback"
-            >
-              <MessageCircle className="h-4 w-4" />
-            </Button>
+            {/* Social Links - Hidden on mobile */}
+            <div className="hidden md:flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleTwitterClick}
+                className="text-blue-300 hover:text-blue-200 hover:bg-green-700"
+                title="Follow our CEO"
+              >
+                <MessageCircle className="h-4 w-4" />
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleWhatsAppClick}
+                className="text-green-300 hover:text-green-200 hover:bg-green-700"
+                title="Contact us for feedback"
+              >
+                <MessageCircle className="h-4 w-4" />
+              </Button>
+            </div>
 
             {/* Notifications */}
-            <NotificationCenter />
+            <div className="hidden md:block">
+              <NotificationCenter />
+            </div>
 
             {/* Trial Indicator */}
             {subscription?.is_trial && (
-              <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-100 to-orange-100 px-2 py-1 rounded-full">
-                <Crown className="h-3 w-3 text-yellow-600" />
-                <span className="text-xs font-medium text-yellow-700">
+              <div className="flex items-center space-x-1 bg-yellow-500 px-2 py-1 rounded-full">
+                <Crown className="h-3 w-3 text-yellow-900" />
+                <span className="text-xs font-medium text-yellow-900">
                   {subscription.trial_days_left} days
                 </span>
               </div>
             )}
 
             {/* Mobile Menu */}
-            <Button variant="ghost" size="sm" className="md:hidden">
-              <Menu className="h-4 w-4" />
-            </Button>
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="md:hidden text-white hover:bg-green-700">
+                  <Menu className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80 bg-green-800 border-green-700">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg font-semibold text-white">Menu</h2>
+                  <SheetClose asChild>
+                    <Button variant="ghost" size="sm" className="text-white hover:bg-green-700">
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </SheetClose>
+                </div>
+                
+                <div className="space-y-4">
+                  {/* Search Bar */}
+                  <div className="w-full">
+                    <MasterSearchBar />
+                  </div>
+                  
+                  {/* Social Links */}
+                  <div className="space-y-2">
+                    <h3 className="text-sm font-medium text-green-200">Connect</h3>
+                    <Button
+                      variant="ghost"
+                      onClick={handleTwitterClick}
+                      className="w-full justify-start text-blue-300 hover:text-blue-200 hover:bg-green-700"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                      Follow our CEO
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      onClick={handleWhatsAppClick}
+                      className="w-full justify-start text-green-300 hover:text-green-200 hover:bg-green-700"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                      Contact Support
+                    </Button>
+                  </div>
+                  
+                  {/* Notifications */}
+                  <div className="pt-2 border-t border-green-700">
+                    <NotificationCenter />
+                  </div>
+                  
+                  {/* User Info */}
+                  <div className="pt-2 border-t border-green-700">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-white">{user?.name}</p>
+                      <p className="text-xs text-green-200">{role}</p>
+                      {subscription?.plan && (
+                        <p className="text-xs text-green-300 capitalize">{subscription.plan} Plan</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
 
@@ -86,13 +151,13 @@ export const DashboardHeader = () => {
         <div className="mt-3">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-green-900">
+              <h2 className="text-xl font-bold text-white">
                 Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}!
               </h2>
-              <p className="text-sm text-green-700 flex items-center space-x-2">
+              <p className="text-sm text-green-200 flex items-center space-x-2">
                 <span>Business at a glance</span>
                 <span className="w-1 h-1 bg-green-400 rounded-full"></span>
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-green-700 text-green-200 px-2 py-0.5 rounded-full">
                   {role}
                 </span>
               </p>
