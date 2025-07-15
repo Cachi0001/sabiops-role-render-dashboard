@@ -1,330 +1,245 @@
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  PieChart, Pie, Cell, AreaChart, Area
-} from 'recharts';
-import { TrendingUp, TrendingDown, DollarSign, Users, Package, Calendar, Download, Crown } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-
-const COLORS = ['#16a34a', '#22c55e', '#4ade80', '#86efac', '#bbf7d0'];
-
-// Mock data - in real app, this would come from API
-const salesTrends = [
-  { month: 'Jan', revenue: 45000, orders: 120, customers: 85 },
-  { month: 'Feb', revenue: 52000, orders: 135, customers: 92 },
-  { month: 'Mar', revenue: 48000, orders: 128, customers: 88 },
-  { month: 'Apr', revenue: 61000, orders: 155, customers: 110 },
-  { month: 'May', revenue: 55000, orders: 142, customers: 98 },
-  { month: 'Jun', revenue: 67000, orders: 168, customers: 125 },
-];
-
-const productPerformance = [
-  { name: 'Office Chairs', value: 35, sales: 1200000 },
-  { name: 'Desks', value: 25, sales: 850000 },
-  { name: 'Monitors', value: 20, sales: 680000 },
-  { name: 'Keyboards', value: 12, sales: 410000 },
-  { name: 'Others', value: 8, sales: 270000 },
-];
-
-const customerSegments = [
-  { segment: 'Enterprise', customers: 45, revenue: 890000, growth: 12.5 },
-  { segment: 'SMB', customers: 128, revenue: 567000, growth: 8.3 },
-  { segment: 'Individual', customers: 234, revenue: 234000, growth: -2.1 },
-];
-
-const dailyMetrics = [
-  { date: '2025-01-01', revenue: 12000, orders: 45, conversion: 3.2 },
-  { date: '2025-01-02', revenue: 15000, orders: 52, conversion: 3.8 },
-  { date: '2025-01-03', revenue: 9000, orders: 38, conversion: 2.9 },
-  { date: '2025-01-04', revenue: 18000, orders: 61, conversion: 4.1 },
-  { date: '2025-01-05', revenue: 14000, orders: 48, conversion: 3.5 },
-  { date: '2025-01-06', revenue: 16000, orders: 55, conversion: 3.7 },
-  { date: '2025-01-07', revenue: 13000, orders: 44, conversion: 3.3 },
-];
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { TrendingUp, TrendingDown, Users, Package, DollarSign, Crown, Download, BarChart3, Calendar } from 'lucide-react';
+import { DashboardHeader } from './DashboardHeader';
 
 export const AdvancedAnalytics = () => {
-  const { subscription, role } = useAuth();
+  const [timeRange, setTimeRange] = useState('30d');
 
-  // Check if user has access to advanced analytics
-  const hasAdvancedAccess = subscription?.plan !== 'free';
+  // Mock data - replace with actual API call
+  const analyticsData = {
+    overview: {
+      avgOrderValue: 394,
+      avgOrderValueChange: 12.5,
+      conversionRate: 3.4,
+      conversionRateChange: 0.8,
+      customerLTV: 1250,
+      customerLTVChange: 8.2,
+      repeatCustomerRate: 68,
+      repeatCustomerRateChange: -2.1,
+    },
+    salesTrends: [
+      { metric: 'Sales Trends', value: '₦2.4M', change: '+18%', trend: 'up' },
+      { metric: 'Product Performance', value: '89 items', change: '+12%', trend: 'up' },
+      { metric: 'Customer Segments', value: '156 customers', change: '+24%', trend: 'up' },
+      { metric: 'Daily Metrics', value: '₦45K avg', change: '-3%', trend: 'down' },
+    ],
+    topProducts: [
+      { name: 'Office Chair', sales: 45, revenue: 225000 },
+      { name: 'Desk Lamp', sales: 32, revenue: 96000 },
+      { name: 'Laptop Stand', sales: 28, revenue: 168000 },
+      { name: 'Wireless Mouse', sales: 24, revenue: 72000 },
+    ],
+    customerSegments: [
+      { segment: 'Premium', customers: 45, revenue: 675000, percentage: 35 },
+      { segment: 'Regular', customers: 89, revenue: 534000, percentage: 45 },
+      { segment: 'New', customers: 22, revenue: 110000, percentage: 20 },
+    ]
+  };
 
-  if (!hasAdvancedAccess) {
-    return (
-      <Card className="border-green-200 bg-gradient-to-br from-green-50 to-green-100">
-        <CardHeader className="text-center py-8">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mb-4">
-            <Crown className="h-8 w-8 text-white" />
-          </div>
-          <CardTitle className="text-xl text-green-900">Advanced Analytics</CardTitle>
-          <CardDescription className="text-green-700">
-            Unlock detailed business insights with advanced analytics
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="text-center">
-          <p className="text-sm text-green-600 mb-4">
-            Get deeper insights into your business performance, customer behavior, and sales trends.
-          </p>
-          <Button className="bg-green-600 hover:bg-green-700 text-white">
-            Upgrade to Premium
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
+  const getChangeColor = (change: number) => {
+    return change >= 0 ? 'text-green-600' : 'text-red-600';
+  };
+
+  const getChangeIcon = (change: number) => {
+    return change >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />;
+  };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-green-900">Advanced Analytics</h2>
-          <p className="text-green-600">Deep insights into your business performance</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
-            <Crown className="h-3 w-3 mr-1" />
-            Premium Feature
-          </Badge>
-          <Button variant="outline" size="sm" className="border-green-200 text-green-700 hover:bg-green-50">
-            <Download className="h-4 w-4 mr-2" />
-            Export Report
-          </Button>
-        </div>
-      </div>
-
-      <Tabs defaultValue="sales" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 bg-green-50 border border-green-200">
-          <TabsTrigger value="sales" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
-            Sales Trends
-          </TabsTrigger>
-          <TabsTrigger value="products" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
-            Product Performance
-          </TabsTrigger>
-          <TabsTrigger value="customers" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
-            Customer Segments
-          </TabsTrigger>
-          <TabsTrigger value="daily" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
-            Daily Metrics
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="sales">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
-            <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-green-700">Avg Order Value</CardTitle>
-                <DollarSign className="h-4 w-4 text-green-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-900">₦394</div>
-                <p className="text-xs text-green-600 flex items-center">
-                  <TrendingUp className="h-3 w-3 mr-1" />
-                  +12.5% from last month
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-green-700">Conversion Rate</CardTitle>
-                <TrendingUp className="h-4 w-4 text-green-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-900">3.4%</div>
-                <p className="text-xs text-green-600 flex items-center">
-                  <TrendingUp className="h-3 w-3 mr-1" />
-                  +0.8% from last month
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-green-700">Customer LTV</CardTitle>
-                <Users className="h-4 w-4 text-green-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-900">₦1,250</div>
-                <p className="text-xs text-green-600 flex items-center">
-                  <TrendingUp className="h-3 w-3 mr-1" />
-                  +8.2% from last month
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-green-700">Churn Rate</CardTitle>
-                <TrendingDown className="h-4 w-4 text-green-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-900">2.1%</div>
-                <p className="text-xs text-green-600 flex items-center">
-                  <TrendingDown className="h-3 w-3 mr-1" />
-                  -0.5% from last month
-                </p>
-              </CardContent>
-            </Card>
+    <div className="min-h-screen bg-green-50">
+      <DashboardHeader />
+      
+      <div className="p-4 space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center space-x-2">
+              <h1 className="text-2xl font-bold text-green-900">Advanced Analytics</h1>
+              <Badge className="bg-green-600 text-white flex items-center space-x-1">
+                <Crown className="h-3 w-3" />
+                <span>Premium Feature</span>
+              </Badge>
+            </div>
+            <p className="text-sm text-green-700">Deep insights into your business performance</p>
           </div>
+          <div className="flex items-center space-x-2">
+            <Select value={timeRange} onValueChange={setTimeRange}>
+              <SelectTrigger className="w-32 border-green-200">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="7d">Last 7 days</SelectItem>
+                <SelectItem value="30d">Last 30 days</SelectItem>
+                <SelectItem value="90d">Last 3 months</SelectItem>
+                <SelectItem value="1y">Last year</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button className="bg-green-600 hover:bg-green-700 text-white">
+              <Download className="h-4 w-4 mr-2" />
+              Export Report
+            </Button>
+          </div>
+        </div>
 
-          <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-            <CardHeader>
-              <CardTitle className="text-green-900">Revenue & Orders Trend</CardTitle>
-              <CardDescription className="text-green-600">
-                Monthly performance over the last 6 months
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={salesTrends}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#bbf7d0" />
-                  <XAxis dataKey="month" stroke="#15803d" />
-                  <YAxis stroke="#15803d" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#f0fdf4', 
-                      border: '1px solid #bbf7d0',
-                      borderRadius: '8px'
-                    }} 
-                  />
-                  <Legend />
-                  <Area type="monotone" dataKey="revenue" stackId="1" stroke="#16a34a" fill="#22c55e" />
-                  <Area type="monotone" dataKey="orders" stackId="2" stroke="#15803d" fill="#4ade80" />
-                </AreaChart>
-              </ResponsiveContainer>
+        {/* Key Metrics */}
+        <div className="grid grid-cols-2 gap-4">
+          <Card className="bg-white border-green-200">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm text-green-700">Avg Order Value</p>
+                <DollarSign className="h-4 w-4 text-green-600" />
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-2xl font-bold text-green-900">₦{analyticsData.overview.avgOrderValue}</p>
+                <div className={`flex items-center space-x-1 ${getChangeColor(analyticsData.overview.avgOrderValueChange)}`}>
+                  {getChangeIcon(analyticsData.overview.avgOrderValueChange)}
+                  <span className="text-sm font-medium">+{analyticsData.overview.avgOrderValueChange}%</span>
+                </div>
+              </div>
+              <p className="text-xs text-green-600 mt-1">from last month</p>
             </CardContent>
           </Card>
-        </TabsContent>
 
-        <TabsContent value="products">
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-              <CardHeader>
-                <CardTitle className="text-green-900">Product Performance</CardTitle>
-                <CardDescription className="text-green-600">
-                  Revenue distribution by product category
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={productPerformance}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {productPerformance.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-              <CardHeader>
-                <CardTitle className="text-green-900">Top Products</CardTitle>
-                <CardDescription className="text-green-600">
-                  Best performing products by sales volume
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {productPerformance.map((product, index) => (
-                    <div key={product.name} className="flex items-center justify-between p-3 bg-white rounded-lg border border-green-100">
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: COLORS[index] }} />
-                        <span className="font-medium text-green-900">{product.name}</span>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-semibold text-green-900">₦{product.sales.toLocaleString()}</div>
-                        <div className="text-sm text-green-600">{product.value}% of total</div>
-                      </div>
-                    </div>
-                  ))}
+          <Card className="bg-white border-green-200">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm text-green-700">Conversion Rate</p>
+                <TrendingUp className="h-4 w-4 text-green-600" />
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-2xl font-bold text-green-900">{analyticsData.overview.conversionRate}%</p>
+                <div className={`flex items-center space-x-1 ${getChangeColor(analyticsData.overview.conversionRateChange)}`}>
+                  {getChangeIcon(analyticsData.overview.conversionRateChange)}
+                  <span className="text-sm font-medium">+{analyticsData.overview.conversionRateChange}%</span>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+              </div>
+              <p className="text-xs text-green-600 mt-1">from last month</p>
+            </CardContent>
+          </Card>
 
-        <TabsContent value="customers">
-          <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-            <CardHeader>
-              <CardTitle className="text-green-900">Customer Segments</CardTitle>
-              <CardDescription className="text-green-600">
-                Analysis by customer type and growth trends
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {customerSegments.map((segment) => (
-                  <div key={segment.segment} className="p-4 bg-white rounded-lg border border-green-100">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-green-900">{segment.segment}</h3>
-                      <Badge 
-                        variant={segment.growth > 0 ? "default" : "destructive"}
-                        className={segment.growth > 0 ? "bg-green-100 text-green-800 border-green-200" : ""}
-                      >
-                        {segment.growth > 0 ? '+' : ''}{segment.growth}%
-                      </Badge>
+          <Card className="bg-white border-green-200">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm text-green-700">Customer LTV</p>
+                <Users className="h-4 w-4 text-green-600" />
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-2xl font-bold text-green-900">₦{analyticsData.overview.customerLTV}</p>
+                <div className={`flex items-center space-x-1 ${getChangeColor(analyticsData.overview.customerLTVChange)}`}>
+                  {getChangeIcon(analyticsData.overview.customerLTVChange)}
+                  <span className="text-sm font-medium">+{analyticsData.overview.customerLTVChange}%</span>
+                </div>
+              </div>
+              <p className="text-xs text-green-600 mt-1">from last month</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-green-200">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm text-green-700">Repeat Rate</p>
+                <Package className="h-4 w-4 text-green-600" />
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-2xl font-bold text-green-900">{analyticsData.overview.repeatCustomerRate}%</p>
+                <div className={`flex items-center space-x-1 ${getChangeColor(analyticsData.overview.repeatCustomerRateChange)}`}>
+                  {getChangeIcon(analyticsData.overview.repeatCustomerRateChange)}
+                  <span className="text-sm font-medium">{analyticsData.overview.repeatCustomerRateChange}%</span>
+                </div>
+              </div>
+              <p className="text-xs text-green-600 mt-1">from last month</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Sales Trends */}
+        <Card className="bg-white border-green-200">
+          <CardHeader>
+            <CardTitle className="text-green-900 flex items-center space-x-2">
+              <BarChart3 className="h-5 w-5" />
+              <span>Performance Metrics</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {analyticsData.salesTrends.map((trend, index) => (
+                <div key={index} className="p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-green-700">{trend.metric}</p>
+                      <p className="text-xl font-bold text-green-900">{trend.value}</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <p className="text-green-600">Customers</p>
-                        <p className="font-semibold text-green-900">{segment.customers}</p>
-                      </div>
-                      <div>
-                        <p className="text-green-600">Revenue</p>
-                        <p className="font-semibold text-green-900">₦{segment.revenue.toLocaleString()}</p>
-                      </div>
+                    <div className={`flex items-center space-x-1 ${trend.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+                      {trend.trend === 'up' ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+                      <span className="text-sm font-medium">{trend.change}</span>
                     </div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="daily">
-          <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
-            <CardHeader>
-              <CardTitle className="text-green-900">Daily Performance</CardTitle>
-              <CardDescription className="text-green-600">
-                Daily metrics and conversion rates
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={dailyMetrics}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#bbf7d0" />
-                  <XAxis dataKey="date" stroke="#15803d" />
-                  <YAxis yAxisId="left" stroke="#15803d" />
-                  <YAxis yAxisId="right" orientation="right" stroke="#15803d" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#f0fdf4', 
-                      border: '1px solid #bbf7d0',
-                      borderRadius: '8px'
-                    }} 
-                  />
-                  <Legend />
-                  <Bar yAxisId="left" dataKey="revenue" fill="#22c55e" />
-                  <Line yAxisId="right" type="monotone" dataKey="conversion" stroke="#16a34a" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+        {/* Top Products */}
+        <Card className="bg-white border-green-200">
+          <CardHeader>
+            <CardTitle className="text-green-900">Top Performing Products</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {analyticsData.topProducts.map((product, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <p className="font-medium text-green-900">{product.name}</p>
+                      <p className="text-sm text-green-700">{product.sales} sales</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-green-900">₦{product.revenue.toLocaleString()}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Customer Segments */}
+        <Card className="bg-white border-green-200">
+          <CardHeader>
+            <CardTitle className="text-green-900">Customer Segments</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {analyticsData.customerSegments.map((segment, index) => (
+                <div key={index} className="p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-medium text-green-900">{segment.segment} Customers</h4>
+                    <span className="text-sm text-green-700">{segment.percentage}%</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-green-700">{segment.customers} customers</span>
+                    <span className="font-bold text-green-900">₦{segment.revenue.toLocaleString()}</span>
+                  </div>
+                  <div className="mt-2 w-full bg-green-200 rounded-full h-2">
+                    <div 
+                      className="bg-green-600 h-2 rounded-full" 
+                      style={{ width: `${segment.percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
