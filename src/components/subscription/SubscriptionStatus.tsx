@@ -7,11 +7,13 @@ import { Crown, Calendar, CreditCard, TrendingUp } from 'lucide-react';
 interface SubscriptionStatusProps {
   subscription: any;
   role: string;
+  onUpgrade?: () => void;
 }
 
 export const SubscriptionStatus: React.FC<SubscriptionStatusProps> = ({ 
   subscription, 
-  role 
+  role,
+  onUpgrade
 }) => {
   if (!subscription) return null;
 
@@ -39,7 +41,10 @@ export const SubscriptionStatus: React.FC<SubscriptionStatusProps> = ({
                 Upgrade to unlock unlimited features
               </p>
             </div>
-            <Button className="bg-orange-600 hover:bg-orange-700 text-white text-xs">
+            <Button 
+              className="bg-orange-600 hover:bg-orange-700 text-white text-xs"
+              onClick={onUpgrade}
+            >
               Upgrade Now
             </Button>
           </div>
@@ -67,7 +72,10 @@ export const SubscriptionStatus: React.FC<SubscriptionStatusProps> = ({
                 Enjoying all premium features
               </p>
             </div>
-            <Button className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs">
+            <Button 
+              className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs"
+              onClick={onUpgrade}
+            >
               Continue Trial
             </Button>
           </div>
@@ -95,7 +103,10 @@ export const SubscriptionStatus: React.FC<SubscriptionStatusProps> = ({
                 Next billing: {subscription.next_billing_date || 'N/A'}
               </p>
             </div>
-            <Button className="bg-green-600 hover:bg-green-700 text-white text-xs">
+            <Button 
+              className="bg-green-600 hover:bg-green-700 text-white text-xs"
+              onClick={onUpgrade}
+            >
               Manage Plan
             </Button>
           </div>

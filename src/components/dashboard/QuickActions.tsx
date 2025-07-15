@@ -7,9 +7,10 @@ import { PlusCircle, Users, Package, FileText, CreditCard, Settings } from 'luci
 interface QuickActionsProps {
   role: string;
   subscription: any;
+  onUpgrade?: () => void;
 }
 
-export const QuickActions: React.FC<QuickActionsProps> = ({ role, subscription }) => {
+export const QuickActions: React.FC<QuickActionsProps> = ({ role, subscription, onUpgrade }) => {
   const getActionsForRole = () => {
     const baseActions = [
       { icon: FileText, label: 'New Invoice', color: 'bg-green-600 hover:bg-green-700' },
@@ -19,7 +20,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ role, subscription }
     if (subscription?.plan === 'free') {
       return [
         ...baseActions,
-        { icon: CreditCard, label: 'Upgrade Plan', color: 'bg-orange-600 hover:bg-orange-700' },
+        { icon: CreditCard, label: 'Upgrade Plan', color: 'bg-orange-600 hover:bg-orange-700', action: onUpgrade },
       ];
     }
 
@@ -64,6 +65,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ role, subscription }
             <Button
               key={index}
               className={`${action.color} text-white text-xs p-3 h-auto flex flex-col items-center space-y-1`}
+              onClick={action.action}
             >
               <action.icon className="h-4 w-4" />
               <span>{action.label}</span>

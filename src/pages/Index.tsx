@@ -11,27 +11,24 @@ import { ReferralWidget } from '@/components/referrals/ReferralWidget';
 import { TeamManagement } from '@/components/team/TeamManagement';
 import { OfflineIndicator } from '@/components/common/OfflineIndicator';
 import { SocialLinks } from '@/components/common/SocialLinks';
+import { MasterSearchBar } from '@/components/search/MasterSearchBar';
+import { UpgradeModal } from '@/components/subscription/UpgradeModal';
+import { WithdrawalModal } from '@/components/referrals/WithdrawalModal';
+import { ExportButtons } from '@/components/export/ExportButtons';
+import { UsageTracker } from '@/components/usage/UsageTracker';
+import { SyncStatus } from '@/components/sync/SyncStatus';
 import { useAuth } from '@/hooks/useAuth';
 import { useDashboard } from '@/hooks/useDashboard';
+import { useOfflineSync } from '@/hooks/useOfflineSync';
 import { toast } from '@/hooks/use-toast';
+import toast as hotToast from 'react-hot-toast';
 
 const Index = () => {
   const { user, role, subscription } = useAuth();
   const { dashboardData, loading, error, refreshData } = useDashboard();
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
-
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
+  const { isOnline } = useOfflineSync();
+  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
+  const [withdrawalModalOpen, setWithdrawalModalOpen] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -42,6 +39,32 @@ const Index = () => {
       });
     }
   }, [error]);
+
+  // Auto-refresh data every 30 seconds when online
+  useEffect(() => {
+    if (!isOnline) return;
+    
+    const interval = setInterval(() => {
+      refreshData();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [isOnline, refreshData]);
+
+  // Show upgrade notification for free plan users nearing limits
+  useEffect(() => {
+    if (subscription?.plan === 'free' && subscription.current_usage) {
+      const invoiceUsage = subscription.current_usage.invoices || 0;
+      const expenseUsage = subscription.current_usage.expenses || 0;
+      
+      if (invoiceUsage >= 4 || expenseUsage >= 4) {
+        hotToast('You are nearing your monthly limits. Consider upgrading!', {
+          icon: '⚠️',
+          duration: 6000,
+        });
+      }
+    }
+  }, [subscription]);
 
   if (!user) {
     return (
@@ -59,14 +82,20 @@ const Index = () => {
       {/* Header */}
       <div className="bg-white border-b border-green-200 p-4">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-green-900">
-              Welcome back, {user.name}
-            </h1>
-            <p className="text-green-700 text-sm">
-              Business at a glance • {role}
-            </p>
+          <div className="flex items-center space-x-4 flex-1">
+            <div>
+              <h1 className="text-xl font-bold text-green-900">
+                Welcome back, {user.name}
+              </h1>
+              <p className="text-green-700 text-sm">
+                Business at a glance • {role}
+              </p>
+            </div>
+            
+            {/* Master Search Bar */}
+            <MasterSearchBar />
           </div>
+          
           <div className="flex items-center space-x-2">
             <SocialLinks />
             <NotificationCenter />
@@ -82,8 +111,17 @@ const Index = () => {
           <SubscriptionStatus 
             subscription={subscription} 
             role={role}
+            onUpgrade={() => setUpgradeModalOpen(true)}
           />
         )}
+
+        {/* Usage Tracker for Free Plan */}
+        <UsageTracker />
+
+        {/* Export Buttons */}
+        <div className="flex justify-end">
+          <ExportButtons type="dashboard" />
+        </div>
 
         {/* Overview Cards - Role-based rendering */}
         <OverviewCards 
@@ -105,6 +143,7 @@ const Index = () => {
         <QuickActions 
           role={role} 
           subscription={subscription}
+          onUpgrade={() => setUpgradeModalOpen(true)}
         />
 
         {/* Owner-only sections */}
@@ -114,6 +153,7 @@ const Index = () => {
             <ReferralWidget 
               referralData={dashboardData?.referral_earnings}
               loading={loading}
+              onWithdraw={() => setWithdrawalModalOpen(true)}
             />
 
             {/* Team Management */}
@@ -123,6 +163,9 @@ const Index = () => {
             />
           </>
         )}
+
+        {/* Sync Status */}
+        <SyncStatus />
 
         {/* Recent Activities - All roles */}
         <RecentActivities 
@@ -141,13 +184,28 @@ const Index = () => {
               <p className="text-green-700 mb-4">
                 You've used {dashboardData?.subscription_status?.current_usage?.invoices || 0} of 5 invoices this month
               </p>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium">
+              <button 
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium"
+                onClick={() => setUpgradeModalOpen(true)}
+              >
                 Upgrade Now
               </button>
             </div>
           </div>
         )}
       </div>
+
+      {/* Modals */}
+      <UpgradeModal 
+        isOpen={upgradeModalOpen}
+        onClose={() => setUpgradeModalOpen(false)}
+      />
+      
+      <WithdrawalModal
+        isOpen={withdrawalModalOpen}
+        onClose={() => setWithdrawalModalOpen(false)}
+        availableAmount={dashboardData?.referral_earnings?.available_for_withdrawal || 0}
+      />
     </DashboardLayout>
   );
 };

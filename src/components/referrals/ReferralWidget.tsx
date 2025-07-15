@@ -8,11 +8,13 @@ import { formatCurrency } from '@/lib/utils';
 interface ReferralWidgetProps {
   referralData: any;
   loading: boolean;
+  onWithdraw?: () => void;
 }
 
 export const ReferralWidget: React.FC<ReferralWidgetProps> = ({ 
   referralData, 
-  loading 
+  loading,
+  onWithdraw
 }) => {
   if (!referralData && !loading) return null;
 
@@ -64,6 +66,7 @@ export const ReferralWidget: React.FC<ReferralWidgetProps> = ({
           <Button 
             className="bg-green-600 hover:bg-green-700 text-white text-xs"
             disabled={availableForWithdrawal < 3000}
+            onClick={onWithdraw}
           >
             Withdraw
           </Button>
