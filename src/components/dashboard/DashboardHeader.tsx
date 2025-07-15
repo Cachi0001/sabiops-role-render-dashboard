@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Bell, MessageCircle, Crown, Search, Menu, X } from 'lucide-react';
+import { Bell, MessageCircle, Crown, Search, Menu, X, Bed } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
@@ -20,7 +20,7 @@ export const DashboardHeader = () => {
   };
 
   return (
-    <div className="bg-green-800 border-b border-green-700 sticky top-0 z-40">
+    <div className="bg-green-500 border-b border-green-400 sticky top-0 z-40">
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo/Brand */}
@@ -49,17 +49,18 @@ export const DashboardHeader = () => {
                 variant="ghost"
                 size="sm"
                 onClick={handleTwitterClick}
-                className="text-blue-300 hover:text-blue-200 hover:bg-green-700"
+                className="text-white hover:text-green-100 hover:bg-green-600 flex items-center gap-1"
                 title="Follow our CEO"
               >
-                <MessageCircle className="h-4 w-4" />
+                <Bed className="h-4 w-4" />
+                <span className="hidden sm:inline text-xs">Follow our CEO</span>
               </Button>
               
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleWhatsAppClick}
-                className="text-green-300 hover:text-green-200 hover:bg-green-700"
+                className="text-white hover:text-green-100 hover:bg-green-600"
                 title="Contact us for feedback"
               >
                 <MessageCircle className="h-4 w-4" />
@@ -84,15 +85,15 @@ export const DashboardHeader = () => {
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="md:hidden text-white hover:bg-green-700">
+                <Button variant="ghost" size="sm" className="md:hidden text-white hover:bg-green-600">
                   <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-green-800 border-green-700">
+              <SheetContent side="right" className="w-80 bg-green-500 border-green-400">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg font-semibold text-white">Menu</h2>
                   <SheetClose asChild>
-                    <Button variant="ghost" size="sm" className="text-white hover:bg-green-700">
+                    <Button variant="ghost" size="sm" className="text-white hover:bg-green-600">
                       <X className="h-4 w-4" />
                     </Button>
                   </SheetClose>
@@ -106,20 +107,20 @@ export const DashboardHeader = () => {
                   
                   {/* Social Links */}
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium text-green-200">Connect</h3>
+                    <h3 className="text-sm font-medium text-green-100">Connect</h3>
                     <Button
                       variant="ghost"
                       onClick={handleTwitterClick}
-                      className="w-full justify-start text-blue-300 hover:text-blue-200 hover:bg-green-700"
+                      className="w-full justify-start text-white hover:text-green-100 hover:bg-green-600"
                     >
-                      <MessageCircle className="h-4 w-4 mr-2" />
+                      <Bed className="h-4 w-4 mr-2" />
                       Follow our CEO
                     </Button>
                     
                     <Button
                       variant="ghost"
                       onClick={handleWhatsAppClick}
-                      className="w-full justify-start text-green-300 hover:text-green-200 hover:bg-green-700"
+                      className="w-full justify-start text-white hover:text-green-100 hover:bg-green-600"
                     >
                       <MessageCircle className="h-4 w-4 mr-2" />
                       Contact Support
@@ -127,12 +128,12 @@ export const DashboardHeader = () => {
                   </div>
                   
                   {/* Notifications */}
-                  <div className="pt-2 border-t border-green-700">
+                  <div className="pt-2 border-t border-green-400">
                     <NotificationCenter />
                   </div>
                   
                   {/* User Info */}
-                  <div className="pt-2 border-t border-green-700">
+                  <div className="pt-2 border-t border-green-400">
                     <div className="space-y-1">
                       <p className="text-sm font-medium text-white">{user?.name}</p>
                       <p className="text-xs text-green-200">{role}</p>
@@ -154,10 +155,10 @@ export const DashboardHeader = () => {
               <h2 className="text-xl font-bold text-white">
                 Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}!
               </h2>
-              <p className="text-sm text-green-200 flex items-center space-x-2">
+              <p className="text-sm text-green-100 flex items-center space-x-2">
                 <span>Business at a glance</span>
-                <span className="w-1 h-1 bg-green-400 rounded-full"></span>
-                <span className="text-xs bg-green-700 text-green-200 px-2 py-0.5 rounded-full">
+                <span className="w-1 h-1 bg-green-200 rounded-full"></span>
+                <span className="text-xs bg-green-600 text-green-100 px-2 py-0.5 rounded-full">
                   {role}
                 </span>
               </p>

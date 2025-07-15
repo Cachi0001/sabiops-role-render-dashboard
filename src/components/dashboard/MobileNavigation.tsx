@@ -40,7 +40,7 @@ export const MobileNavigation = () => {
   const navigationItems = getNavigationItems();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-green-800 border-t border-green-700 z-50 safe-area-pb">
+    <div className="fixed bottom-0 left-0 right-0 bg-green-500 border-t border-green-400 z-50 safe-area-pb">
       <div className="px-2 py-1">
         <div className={cn(
           "grid gap-1 w-full",
@@ -55,7 +55,7 @@ export const MobileNavigation = () => {
                 "flex flex-col items-center justify-center py-2 px-1 text-xs font-medium transition-colors rounded-lg min-h-[60px]",
                 item.active
                   ? "text-white bg-green-600"
-                  : "text-green-200 hover:text-white hover:bg-green-700"
+                  : "text-white hover:text-green-100 hover:bg-green-600"
               )}
             >
               <item.icon className="h-5 w-5 mb-1 flex-shrink-0" />
