@@ -4,6 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Users, Package, FileText, CreditCard, Settings } from 'lucide-react';
 
+interface ActionItem {
+  icon: any;
+  label: string;
+  color: string;
+  action?: () => void;
+}
+
 interface QuickActionsProps {
   role: string;
   subscription: any;
@@ -11,8 +18,8 @@ interface QuickActionsProps {
 }
 
 export const QuickActions: React.FC<QuickActionsProps> = ({ role, subscription, onUpgrade }) => {
-  const getActionsForRole = () => {
-    const baseActions = [
+  const getActionsForRole = (): ActionItem[] => {
+    const baseActions: ActionItem[] = [
       { icon: FileText, label: 'New Invoice', color: 'bg-green-600 hover:bg-green-700' },
       { icon: Users, label: 'Add Customer', color: 'bg-blue-600 hover:bg-blue-700' },
     ];
@@ -65,7 +72,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ role, subscription, 
             <Button
               key={index}
               className={`${action.color} text-white text-xs p-3 h-auto flex flex-col items-center space-y-1`}
-              onClick={action.action}
+              onClick={action.action || (() => {})}
             >
               <action.icon className="h-4 w-4" />
               <span>{action.label}</span>
