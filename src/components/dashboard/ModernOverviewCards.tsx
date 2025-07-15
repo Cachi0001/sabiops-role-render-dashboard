@@ -171,15 +171,13 @@ export const ModernOverviewCards: React.FC<ModernOverviewCardsProps> = ({ data, 
   return (
     <div className="grid grid-cols-2 gap-3">
       {cards.map((card, index) => (
-        <Card key={index} className="bg-white border-0 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+        <Card key={index} className="bg-gradient-to-br from-green-50 via-white to-green-100 border-green-200 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
           <CardContent className="p-0">
-            <div className={`h-1 bg-gradient-to-r ${card.gradient}`} />
-            <div className="p-4">
+            <div className={`h-2 bg-gradient-to-r ${card.gradient} shadow-sm`} />
+            <div className="p-4 bg-gradient-to-br from-white to-green-50">
               <div className="flex items-start justify-between mb-3">
-                <div className={`p-2 rounded-lg bg-gradient-to-br ${card.gradient} bg-opacity-10`}>
-                  <card.icon className={`h-4 w-4 text-white`} style={{
-                    filter: `drop-shadow(0 0 4px hsl(var(--${card.gradient.split('-')[1]}-500)))`
-                  }} />
+                <div className={`p-2 rounded-lg bg-gradient-to-br ${card.gradient} shadow-md`}>
+                  <card.icon className="h-4 w-4 text-white" />
                 </div>
                 {subscription?.is_trial && index === 0 && (
                   <Crown className="h-4 w-4 text-yellow-500" />
@@ -187,9 +185,9 @@ export const ModernOverviewCards: React.FC<ModernOverviewCardsProps> = ({ data, 
               </div>
               
               <div>
-                <p className="text-xs font-medium text-gray-600 mb-1">{card.title}</p>
-                <p className="text-lg font-bold text-gray-900 mb-1">{card.value}</p>
-                <p className={`text-xs ${getChangeColor(card.changeType)}`}>
+                <p className="text-xs font-medium text-green-700 mb-1">{card.title}</p>
+                <p className="text-lg font-bold text-green-900 mb-1">{card.value}</p>
+                <p className={`text-xs font-medium ${getChangeColor(card.changeType)}`}>
                   {card.change}
                 </p>
               </div>

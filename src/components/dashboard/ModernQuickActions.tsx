@@ -107,31 +107,31 @@ export const ModernQuickActions: React.FC<ModernQuickActionsProps> = ({ onUpgrad
   const actions = getActionsForRole();
 
   return (
-    <Card className="bg-white border-0 shadow-sm overflow-hidden">
-      <div className="h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500" />
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-semibold text-gray-900 flex items-center space-x-2">
-          <Plus className="h-4 w-4 text-purple-500" />
+    <Card className="bg-gradient-to-br from-purple-50 via-white to-orange-50 border-purple-200 shadow-lg overflow-hidden">
+      <div className="h-2 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 shadow-sm" />
+      <CardHeader className="pb-3 bg-gradient-to-r from-purple-100 to-orange-100">
+        <CardTitle className="text-sm font-semibold text-purple-900 flex items-center space-x-2">
+          <Plus className="h-4 w-4 text-purple-600" />
           <span>Quick Actions</span>
           {subscription?.is_trial && (
             <Crown className="h-3 w-3 text-yellow-500" />
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="pt-0 bg-gradient-to-br from-white to-purple-50">
         <div className="grid grid-cols-2 gap-3">
           {actions.map((action, index) => (
             <Button
               key={index}
               variant="ghost"
-              className={`h-auto p-3 bg-gradient-to-br ${action.bgGradient} hover:shadow-md transition-all duration-300 border-0`}
+              className={`h-auto p-3 bg-gradient-to-br ${action.bgGradient} hover:shadow-lg transition-all duration-300 border-2 border-transparent hover:border-purple-200`}
               onClick={action.action}
             >
               <div className="flex flex-col items-center space-y-2 w-full">
-                <div className={`p-2 rounded-lg bg-gradient-to-br ${action.gradient}`}>
+                <div className={`p-2 rounded-lg bg-gradient-to-br ${action.gradient} shadow-md`}>
                   <action.icon className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-xs font-medium text-gray-700">{action.label}</span>
+                <span className="text-xs font-medium text-gray-800">{action.label}</span>
               </div>
             </Button>
           ))}

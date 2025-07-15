@@ -165,23 +165,23 @@ export const ModernChartsSection: React.FC<ModernChartsSectionProps> = ({ data, 
   return (
     <div className="space-y-4">
       {charts.map((chart, index) => (
-        <Card key={index} className="bg-white border-0 shadow-sm overflow-hidden">
-          <div className="h-1 bg-gradient-to-r from-green-500 via-purple-500 to-blue-500" />
-          <CardHeader className="pb-2">
+        <Card key={index} className="bg-gradient-to-br from-green-50 via-white to-blue-50 border-green-200 shadow-lg overflow-hidden">
+          <div className="h-2 bg-gradient-to-r from-green-500 via-purple-500 to-blue-500 shadow-sm" />
+          <CardHeader className="pb-2 bg-gradient-to-r from-green-100 to-blue-100">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-sm font-semibold text-gray-900 flex items-center space-x-2">
+                <CardTitle className="text-sm font-semibold text-green-900 flex items-center space-x-2">
                   <span>{chart.title}</span>
                   {subscription?.is_trial && index === 0 && (
                     <Crown className="h-3 w-3 text-yellow-500" />
                   )}
                 </CardTitle>
-                <p className="text-xs text-gray-500 mt-1">{chart.subtitle}</p>
+                <p className="text-xs text-green-700 mt-1 font-medium">{chart.subtitle}</p>
               </div>
-              <TrendingUp className="h-4 w-4 text-green-500" />
+              <TrendingUp className="h-4 w-4 text-green-600" />
             </div>
           </CardHeader>
-          <CardContent className="pt-0">
+          <CardContent className="pt-4 bg-gradient-to-br from-white to-green-50">
             {chart.component}
           </CardContent>
         </Card>

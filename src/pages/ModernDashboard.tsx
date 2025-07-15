@@ -85,16 +85,24 @@ const ModernDashboard = () => {
       <DashboardHeader />
 
       {/* Main Dashboard Content */}
-      <div className="p-4 space-y-6 bg-gradient-to-br from-gray-50 to-green-50 min-h-screen">
+      <div className="p-4 space-y-6 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen">
         {/* Subscription Status */}
         <ModernSubscriptionStatus onUpgrade={() => setUpgradeModalOpen(true)} />
 
         {/* Usage Tracker for Free Plan */}
-        <UsageTracker />
+        <div className="bg-gradient-to-r from-green-100 to-green-200 rounded-xl p-1">
+          <div className="bg-white rounded-lg">
+            <UsageTracker />
+          </div>
+        </div>
 
         {/* Export Buttons */}
         <div className="flex justify-end">
-          <ExportButtons type="dashboard" />
+          <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl p-1">
+            <div className="bg-white rounded-lg">
+              <ExportButtons type="dashboard" />
+            </div>
+          </div>
         </div>
 
         {/* Overview Cards */}
@@ -110,22 +118,34 @@ const ModernDashboard = () => {
         {role === 'Owner' && subscription?.plan !== 'free' && (
           <>
             {/* Referral Widget */}
-            <ReferralWidget 
-              referralData={dashboardData?.referral_earnings}
-              loading={loading}
-              onWithdraw={() => setWithdrawalModalOpen(true)}
-            />
+            <div className="bg-gradient-to-r from-green-200 to-teal-200 rounded-xl p-1">
+              <div className="bg-white rounded-lg">
+                <ReferralWidget 
+                  referralData={dashboardData?.referral_earnings}
+                  loading={loading}
+                  onWithdraw={() => setWithdrawalModalOpen(true)}
+                />
+              </div>
+            </div>
 
             {/* Team Management */}
-            <TeamManagement 
-              teamData={dashboardData?.team}
-              loading={loading}
-            />
+            <div className="bg-gradient-to-r from-purple-200 to-pink-200 rounded-xl p-1">
+              <div className="bg-white rounded-lg">
+                <TeamManagement 
+                  teamData={dashboardData?.team}
+                  loading={loading}
+                />
+              </div>
+            </div>
           </>
         )}
 
         {/* Sync Status */}
-        <SyncStatus />
+        <div className="bg-gradient-to-r from-blue-200 to-indigo-200 rounded-xl p-1">
+          <div className="bg-white rounded-lg">
+            <SyncStatus />
+          </div>
+        </div>
 
         {/* Recent Activities */}
         <ModernRecentActivities 
@@ -135,19 +155,20 @@ const ModernDashboard = () => {
 
         {/* Bottom Upgrade Section for Free Plan */}
         {subscription?.plan === 'free' && (
-          <div className="bg-gradient-to-r from-orange-500 to-red-500 p-6 rounded-2xl shadow-lg text-white overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white bg-opacity-10 rounded-full -mr-16 -mt-16" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white bg-opacity-10 rounded-full -ml-12 -mb-12" />
+          <div className="bg-gradient-to-r from-green-500 via-orange-500 to-red-500 p-6 rounded-2xl shadow-xl text-white overflow-hidden relative border-2 border-green-300">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white bg-opacity-20 rounded-full -mr-16 -mt-16" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white bg-opacity-20 rounded-full -ml-12 -mb-12" />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white bg-opacity-10 rounded-full" />
             <div className="relative">
               <div className="text-center">
-                <h3 className="text-lg font-bold mb-2">
+                <h3 className="text-xl font-bold mb-2 text-shadow">
                   🚀 Unlock Full Features
                 </h3>
-                <p className="text-orange-100 mb-4">
+                <p className="text-green-100 mb-4 font-medium">
                   You've used {dashboardData?.subscription_status?.current_usage?.invoices || 3} of 5 invoices this month
                 </p>
                 <button 
-                  className="bg-white text-orange-600 hover:bg-orange-50 px-6 py-3 rounded-xl font-bold shadow-lg transition-all duration-300 transform hover:scale-105"
+                  className="bg-white text-green-600 hover:bg-green-50 px-8 py-3 rounded-xl font-bold shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-green-600"
                   onClick={() => setUpgradeModalOpen(true)}
                 >
                   Upgrade Now 🎯
