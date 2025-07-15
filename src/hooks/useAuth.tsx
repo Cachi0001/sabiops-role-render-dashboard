@@ -41,6 +41,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check URL parameter for demo purposes
+    const urlParams = new URLSearchParams(window.location.search);
+    const planParam = urlParams.get('plan');
+    
     // Mock authentication for demo
     const mockUser: User = {
       id: '1',
@@ -48,21 +52,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email: 'owner@sabiops.com',
     };
 
-    const mockSubscription: Subscription = {
-      plan: 'silver_monthly',
-      status: 'active',
-      is_trial: false,
-      trial_days_left: 0,
-      current_usage: {
-        invoices: 15,
-        expenses: 8,
-      },
-      usage_limits: {
-        invoices: 'unlimited',
-        expenses: 'unlimited',
-      },
-      next_billing_date: '2025-02-07',
-    };
+    let mockSubscription: Subscription;
+
+    // Set subscription based on URL parameter or default to free
+    if (planParam === 'basic' || planParam === 'free') {
+      mockSubscription = {
+        plan: 'free',
+        status: 'active',
+        is_trial: false,
+        trial_days_left: 0,
+        current_usage: {
+          invoices: 3,
+          expenses: 2,
+        },
+        usage_limits: {
+          invoices: 5,
+          expenses: 5,
+        },
+      };
+    } else {
+      mockSubscription = {
+        plan: 'silver_monthly',
+        status: 'active',
+        is_trial: false,
+        trial_days_left: 0,
+        current_usage: {
+          invoices: 15,
+          expenses: 8,
+        },
+        usage_limits: {
+          invoices: 'unlimited',
+          expenses: 'unlimited',
+        },
+        next_billing_date: '2025-02-07',
+      };
+    }
 
     setUser(mockUser);
     setRole('Owner');

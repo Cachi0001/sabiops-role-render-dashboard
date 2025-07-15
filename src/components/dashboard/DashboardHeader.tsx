@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Bell, MessageCircle, Crown, Search, Menu, X, Bed } from 'lucide-react';
+import { Bell, MessageCircle, Crown, Search, Menu, X, Bed, BarChart3, History } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
@@ -17,6 +17,24 @@ export const DashboardHeader = () => {
 
   const handleWhatsAppClick = () => {
     window.open('https://wa.me/2348158025887', '_blank');
+  };
+
+  const handleAnalyticsClick = () => {
+    if (subscription?.plan === 'free') {
+      // Show upgrade prompt
+      alert('Upgrade to access advanced analytics');
+      return;
+    }
+    window.location.href = '/analytics';
+  };
+
+  const handleTransactionsClick = () => {
+    if (subscription?.plan === 'free') {
+      // Show upgrade prompt
+      alert('Upgrade to access transaction history');
+      return;
+    }
+    window.location.href = '/transactions';
   };
 
   return (
@@ -36,13 +54,46 @@ export const DashboardHeader = () => {
             </div>
           </div>
 
-          {/* Search Bar - Hidden on mobile */}
-          <div className="hidden md:flex flex-1 max-w-md mx-6">
-            <MasterSearchBar />
-          </div>
+          {/* Search Bar - Hidden on mobile for free plan */}
+          {subscription?.plan !== 'free' && (
+            <div className="hidden md:flex flex-1 max-w-md mx-6">
+              <MasterSearchBar />
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex items-center space-x-2">
+            {/* Analytics & Transactions for Desktop - Paid Plans */}
+            <div className="hidden md:flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleAnalyticsClick}
+                className={`text-white hover:text-green-100 hover:bg-green-600 flex items-center gap-1 ${
+                  subscription?.plan === 'free' ? 'opacity-60' : ''
+                }`}
+                title={subscription?.plan === 'free' ? 'Upgrade to access Analytics' : 'Advanced Analytics'}
+              >
+                <BarChart3 className="h-4 w-4" />
+                <span className="hidden sm:inline text-xs">Analytics</span>
+                {subscription?.plan === 'free' && <Crown className="h-3 w-3 text-yellow-400 ml-1" />}
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleTransactionsClick}
+                className={`text-white hover:text-green-100 hover:bg-green-600 flex items-center gap-1 ${
+                  subscription?.plan === 'free' ? 'opacity-60' : ''
+                }`}
+                title={subscription?.plan === 'free' ? 'Upgrade to access Transactions' : 'Transaction History'}
+              >
+                <History className="h-4 w-4" />
+                <span className="hidden sm:inline text-xs">Transactions</span>
+                {subscription?.plan === 'free' && <Crown className="h-3 w-3 text-yellow-400 ml-1" />}
+              </Button>
+            </div>
+
             {/* Social Links - Hidden on mobile */}
             <div className="hidden md:flex items-center space-x-2">
               <Button
@@ -100,9 +151,39 @@ export const DashboardHeader = () => {
                 </div>
                 
                 <div className="space-y-4">
-                  {/* Search Bar */}
-                  <div className="w-full">
-                    <MasterSearchBar />
+                  {/* Search Bar - Only for paid plans */}
+                  {subscription?.plan !== 'free' && (
+                    <div className="w-full">
+                      <MasterSearchBar />
+                    </div>
+                  )}
+                  
+                  {/* Analytics & Transactions for Mobile */}
+                  <div className="space-y-2">
+                    <h3 className="text-sm font-medium text-green-100">Reports & Analytics</h3>
+                    <Button
+                      variant="ghost"
+                      onClick={handleAnalyticsClick}
+                      className={`w-full justify-start text-white hover:text-green-100 hover:bg-green-600 ${
+                        subscription?.plan === 'free' ? 'opacity-60' : ''
+                      }`}
+                    >
+                      <BarChart3 className="h-4 w-4 mr-2" />
+                      Advanced Analytics
+                      {subscription?.plan === 'free' && <Crown className="h-3 w-3 text-yellow-400 ml-auto" />}
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      onClick={handleTransactionsClick}
+                      className={`w-full justify-start text-white hover:text-green-100 hover:bg-green-600 ${
+                        subscription?.plan === 'free' ? 'opacity-60' : ''
+                      }`}
+                    >
+                      <History className="h-4 w-4 mr-2" />
+                      Transaction History
+                      {subscription?.plan === 'free' && <Crown className="h-3 w-3 text-yellow-400 ml-auto" />}
+                    </Button>
                   </div>
                   
                   {/* Social Links */}
@@ -138,7 +219,9 @@ export const DashboardHeader = () => {
                       <p className="text-sm font-medium text-white">{user?.name}</p>
                       <p className="text-xs text-green-200">{role}</p>
                       {subscription?.plan && (
-                        <p className="text-xs text-green-300 capitalize">{subscription.plan} Plan</p>
+                        <p className="text-xs text-green-300 capitalize">
+                          {subscription.plan === 'free' ? 'Free Plan' : `${subscription.plan} Plan`}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -161,6 +244,14 @@ export const DashboardHeader = () => {
                 <span className="text-xs bg-green-600 text-green-100 px-2 py-0.5 rounded-full">
                   {role}
                 </span>
+                {subscription?.plan === 'free' && (
+                  <>
+                    <span className="w-1 h-1 bg-green-200 rounded-full"></span>
+                    <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded-full">
+                      Free Plan
+                    </span>
+                  </>
+                )}
               </p>
             </div>
             
@@ -169,16 +260,19 @@ export const DashboardHeader = () => {
                 size="sm"
                 className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
               >
+                <Crown className="h-4 w-4 mr-1" />
                 Upgrade Now
               </Button>
             )}
           </div>
         </div>
 
-        {/* Mobile Search */}
-        <div className="md:hidden mt-3">
-          <MasterSearchBar />
-        </div>
+        {/* Mobile Search - Only for paid plans */}
+        {subscription?.plan !== 'free' && (
+          <div className="md:hidden mt-3">
+            <MasterSearchBar />
+          </div>
+        )}
       </div>
     </div>
   );
