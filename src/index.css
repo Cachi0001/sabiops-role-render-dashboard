@@ -219,6 +219,15 @@
     @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
   }
 
+  /* Safe area utilities for mobile */
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-pt {
+    padding-top: env(safe-area-inset-top);
+  }
+
   /* Card hover effects */
   .card-hover {
     @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
