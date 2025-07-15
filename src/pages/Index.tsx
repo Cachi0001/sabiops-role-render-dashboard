@@ -21,7 +21,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useDashboard } from '@/hooks/useDashboard';
 import { useOfflineSync } from '@/hooks/useOfflineSync';
 import { toast } from '@/hooks/use-toast';
-import toast as hotToast from 'react-hot-toast';
+import { toast as hotToast } from 'react-hot-toast';
 
 const Index = () => {
   const { user, role, subscription } = useAuth();
