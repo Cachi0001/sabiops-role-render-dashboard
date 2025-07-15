@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Bell, MessageCircle, Crown, Search, Menu, X, Bed, BarChart3, History, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -5,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 import { MasterSearchBar } from '@/components/search/MasterSearchBar';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export const DashboardHeader = () => {
   const { user, role, subscription, logout } = useAuth();
@@ -42,19 +44,19 @@ export const DashboardHeader = () => {
   };
 
   return (
-    <div className="bg-green-500 border-b border-green-400 sticky top-0 z-40">
+    <div className="bg-primary border-b border-primary/20 sticky top-0 z-40 dark:bg-primary/90 dark:border-primary/30">
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo/Brand */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-300 rounded-lg flex items-center justify-center">
-              <span className="text-green-900 font-bold text-sm">S</span>
+            <div className="w-8 h-8 bg-gradient-to-br from-primary/80 to-accent rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">S</span>
             </div>
             <div className="hidden md:block">
-              <h1 className="text-lg font-bold text-white">
+              <h1 className="text-lg font-bold text-primary-foreground">
                 SabiOps
               </h1>
-              <p className="text-xs text-green-200">Business Dashboard</p>
+              <p className="text-xs text-primary-foreground/80">Business Dashboard</p>
             </div>
           </div>
 
@@ -67,13 +69,22 @@ export const DashboardHeader = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-2">
+            {/* Theme Toggle - Desktop */}
+            <div className="hidden md:block">
+              <ThemeToggle 
+                variant="ghost" 
+                size="sm" 
+                className="text-primary-foreground hover:text-primary-foreground/80 hover:bg-primary-foreground/10"
+              />
+            </div>
+
             {/* Analytics & Transactions for Desktop - Paid Plans */}
             <div className="hidden md:flex items-center space-x-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleAnalyticsClick}
-                className={`text-white hover:text-green-100 hover:bg-green-600 flex items-center gap-1 ${
+                className={`text-primary-foreground hover:text-primary-foreground/80 hover:bg-primary-foreground/10 flex items-center gap-1 ${
                   subscription?.plan === 'free' ? 'opacity-60' : ''
                 }`}
                 title={subscription?.plan === 'free' ? 'Upgrade to access Analytics' : 'Advanced Analytics'}
@@ -87,7 +98,7 @@ export const DashboardHeader = () => {
                 variant="ghost"
                 size="sm"
                 onClick={handleTransactionsClick}
-                className={`text-white hover:text-green-100 hover:bg-green-600 flex items-center gap-1 ${
+                className={`text-primary-foreground hover:text-primary-foreground/80 hover:bg-primary-foreground/10 flex items-center gap-1 ${
                   subscription?.plan === 'free' ? 'opacity-60' : ''
                 }`}
                 title={subscription?.plan === 'free' ? 'Upgrade to access Transactions' : 'Transaction History'}
@@ -104,7 +115,7 @@ export const DashboardHeader = () => {
                 variant="ghost"
                 size="sm"
                 onClick={handleTwitterClick}
-                className="text-white hover:text-green-100 hover:bg-green-600 flex items-center gap-1"
+                className="text-primary-foreground hover:text-primary-foreground/80 hover:bg-primary-foreground/10 flex items-center gap-1"
                 title="Follow our CEO"
               >
                 <Bed className="h-4 w-4" />
@@ -115,7 +126,7 @@ export const DashboardHeader = () => {
                 variant="ghost"
                 size="sm"
                 onClick={handleWhatsAppClick}
-                className="text-white hover:text-green-100 hover:bg-green-600"
+                className="text-primary-foreground hover:text-primary-foreground/80 hover:bg-primary-foreground/10"
                 title="Contact us for feedback"
               >
                 <MessageCircle className="h-4 w-4" />
@@ -128,7 +139,7 @@ export const DashboardHeader = () => {
                 variant="ghost"
                 size="sm"
                 onClick={handleLogout}
-                className="text-white hover:text-green-100 hover:bg-green-600 flex items-center gap-1"
+                className="text-primary-foreground hover:text-primary-foreground/80 hover:bg-primary-foreground/10 flex items-center gap-1"
                 title="Logout"
               >
                 <LogOut className="h-4 w-4" />
@@ -154,18 +165,21 @@ export const DashboardHeader = () => {
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="md:hidden text-white hover:bg-green-600">
+                <Button variant="ghost" size="sm" className="md:hidden text-primary-foreground hover:bg-primary-foreground/10">
                   <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-green-500 border-green-400">
+              <SheetContent side="right" className="w-80 bg-background border-border">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-white">Menu</h2>
-                  <SheetClose asChild>
-                    <Button variant="ghost" size="sm" className="text-white hover:bg-green-600">
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </SheetClose>
+                  <h2 className="text-lg font-semibold text-foreground">Menu</h2>
+                  <div className="flex items-center gap-2">
+                    <ThemeToggle showText />
+                    <SheetClose asChild>
+                      <Button variant="ghost" size="sm" className="text-foreground hover:bg-accent">
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </SheetClose>
+                  </div>
                 </div>
                 
                 <div className="space-y-4">
@@ -178,11 +192,11 @@ export const DashboardHeader = () => {
                   
                   {/* Reports & Analytics for Mobile */}
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium text-green-100">Reports & Analytics</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground">Reports & Analytics</h3>
                     <Button
                       variant="ghost"
                       onClick={handleAnalyticsClick}
-                      className={`w-full justify-start text-white hover:text-green-100 hover:bg-green-600 ${
+                      className={`w-full justify-start text-foreground hover:text-foreground hover:bg-accent ${
                         subscription?.plan === 'free' ? 'opacity-60' : ''
                       }`}
                     >
@@ -194,7 +208,7 @@ export const DashboardHeader = () => {
                     <Button
                       variant="ghost"
                       onClick={handleTransactionsClick}
-                      className={`w-full justify-start text-white hover:text-green-100 hover:bg-green-600 ${
+                      className={`w-full justify-start text-foreground hover:text-foreground hover:bg-accent ${
                         subscription?.plan === 'free' ? 'opacity-60' : ''
                       }`}
                     >
@@ -206,11 +220,11 @@ export const DashboardHeader = () => {
                   
                   {/* Social Links */}
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium text-green-100">Connect</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground">Connect</h3>
                     <Button
                       variant="ghost"
                       onClick={handleTwitterClick}
-                      className="w-full justify-start text-white hover:text-green-100 hover:bg-green-600"
+                      className="w-full justify-start text-foreground hover:text-foreground hover:bg-accent"
                     >
                       <Bed className="h-4 w-4 mr-2" />
                       Follow our CEO
@@ -219,7 +233,7 @@ export const DashboardHeader = () => {
                     <Button
                       variant="ghost"
                       onClick={handleWhatsAppClick}
-                      className="w-full justify-start text-white hover:text-green-100 hover:bg-green-600"
+                      className="w-full justify-start text-foreground hover:text-foreground hover:bg-accent"
                     >
                       <MessageCircle className="h-4 w-4 mr-2" />
                       Contact Support
@@ -227,11 +241,11 @@ export const DashboardHeader = () => {
                   </div>
                   
                   {/* Logout */}
-                  <div className="pt-2 border-t border-green-400">
+                  <div className="pt-2 border-t border-border">
                     <Button
                       variant="ghost"
                       onClick={handleLogout}
-                      className="w-full justify-start text-white hover:text-green-100 hover:bg-green-600"
+                      className="w-full justify-start text-foreground hover:text-foreground hover:bg-accent"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
                       Logout
@@ -239,17 +253,17 @@ export const DashboardHeader = () => {
                   </div>
                   
                   {/* Notifications */}
-                  <div className="pt-2 border-t border-green-400">
+                  <div className="pt-2 border-t border-border">
                     <NotificationCenter />
                   </div>
                   
                   {/* User Info */}
-                  <div className="pt-2 border-t border-green-400">
+                  <div className="pt-2 border-t border-border">
                     <div className="space-y-1">
-                      <p className="text-sm font-medium text-white">{user?.name}</p>
-                      <p className="text-xs text-green-200">{role}</p>
+                      <p className="text-sm font-medium text-foreground">{user?.name}</p>
+                      <p className="text-xs text-muted-foreground">{role}</p>
                       {subscription?.plan && (
-                        <p className="text-xs text-green-300 capitalize">
+                        <p className="text-xs text-muted-foreground capitalize">
                           {subscription.plan === 'free' ? 'Free Plan' : `${subscription.plan} Plan`}
                         </p>
                       )}
@@ -265,18 +279,18 @@ export const DashboardHeader = () => {
         <div className="mt-3">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold text-primary-foreground">
                 Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}!
               </h2>
-              <p className="text-sm text-green-100 flex items-center space-x-2">
+              <p className="text-sm text-primary-foreground/80 flex items-center space-x-2">
                 <span>Business at a glance</span>
-                <span className="w-1 h-1 bg-green-200 rounded-full"></span>
-                <span className="text-xs bg-green-600 text-green-100 px-2 py-0.5 rounded-full">
+                <span className="w-1 h-1 bg-primary-foreground/60 rounded-full"></span>
+                <span className="text-xs bg-primary-foreground/20 text-primary-foreground px-2 py-0.5 rounded-full">
                   {role}
                 </span>
                 {subscription?.plan === 'free' && (
                   <>
-                    <span className="w-1 h-1 bg-green-200 rounded-full"></span>
+                    <span className="w-1 h-1 bg-primary-foreground/60 rounded-full"></span>
                     <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded-full">
                       Free Plan
                     </span>

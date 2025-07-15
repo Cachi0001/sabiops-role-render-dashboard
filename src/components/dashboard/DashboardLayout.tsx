@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen bg-background dark:bg-background">
       {/* Mobile-first layout */}
       <div className="pb-16"> {/* Bottom padding for mobile nav */}
         {children}
