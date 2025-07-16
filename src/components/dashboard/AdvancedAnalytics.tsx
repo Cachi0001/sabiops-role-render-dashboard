@@ -50,25 +50,25 @@ export const AdvancedAnalytics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen bg-background">
       <DashboardHeader />
       
-      <div className="p-4 space-y-6">
+      <div className="p-4 space-y-6 max-w-full overflow-x-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
           <div>
-            <div className="flex items-center space-x-2">
-              <h1 className="text-2xl font-bold text-green-900">Advanced Analytics</h1>
-              <Badge className="bg-green-600 text-white flex items-center space-x-1">
+            <div className="flex items-center space-x-2 flex-wrap">
+              <h1 className="text-2xl font-bold text-foreground">Advanced Analytics</h1>
+              <Badge className="bg-primary text-primary-foreground flex items-center space-x-1">
                 <Crown className="h-3 w-3" />
                 <span>Premium Feature</span>
               </Badge>
             </div>
-            <p className="text-sm text-green-700">Deep insights into your business performance</p>
+            <p className="text-sm text-muted-foreground">Deep insights into your business performance</p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-wrap gap-2">
             <Select value={timeRange} onValueChange={setTimeRange}>
-              <SelectTrigger className="w-32 border-green-200">
+              <SelectTrigger className="w-32">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -78,7 +78,7 @@ export const AdvancedAnalytics = () => {
                 <SelectItem value="1y">Last year</SelectItem>
               </SelectContent>
             </Select>
-            <Button className="bg-green-600 hover:bg-green-700 text-white">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
               <Download className="h-4 w-4 mr-2" />
               Export Report
             </Button>
@@ -86,80 +86,80 @@ export const AdvancedAnalytics = () => {
         </div>
 
         {/* Key Metrics */}
-        <div className="grid grid-cols-2 gap-4">
-          <Card className="bg-white border-green-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Card className="sabiops-card">
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-green-700">Avg Order Value</p>
-                <DollarSign className="h-4 w-4 text-green-600" />
+                <p className="text-sm text-muted-foreground">Avg Order Value</p>
+                <DollarSign className="h-4 w-4 text-primary" />
               </div>
               <div className="flex items-center justify-between">
-                <p className="text-2xl font-bold text-green-900">₦{analyticsData.overview.avgOrderValue}</p>
+                <p className="text-2xl font-bold text-foreground">₦{analyticsData.overview.avgOrderValue}</p>
                 <div className={`flex items-center space-x-1 ${getChangeColor(analyticsData.overview.avgOrderValueChange)}`}>
                   {getChangeIcon(analyticsData.overview.avgOrderValueChange)}
                   <span className="text-sm font-medium">+{analyticsData.overview.avgOrderValueChange}%</span>
                 </div>
               </div>
-              <p className="text-xs text-green-600 mt-1">from last month</p>
+              <p className="text-xs text-muted-foreground mt-1">from last month</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-green-200">
+          <Card className="sabiops-card">
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-green-700">Conversion Rate</p>
-                <TrendingUp className="h-4 w-4 text-green-600" />
+                <p className="text-sm text-muted-foreground">Conversion Rate</p>
+                <TrendingUp className="h-4 w-4 text-primary" />
               </div>
               <div className="flex items-center justify-between">
-                <p className="text-2xl font-bold text-green-900">{analyticsData.overview.conversionRate}%</p>
+                <p className="text-2xl font-bold text-foreground">{analyticsData.overview.conversionRate}%</p>
                 <div className={`flex items-center space-x-1 ${getChangeColor(analyticsData.overview.conversionRateChange)}`}>
                   {getChangeIcon(analyticsData.overview.conversionRateChange)}
                   <span className="text-sm font-medium">+{analyticsData.overview.conversionRateChange}%</span>
                 </div>
               </div>
-              <p className="text-xs text-green-600 mt-1">from last month</p>
+              <p className="text-xs text-muted-foreground mt-1">from last month</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-green-200">
+          <Card className="sabiops-card">
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-green-700">Customer LTV</p>
-                <Users className="h-4 w-4 text-green-600" />
+                <p className="text-sm text-muted-foreground">Customer LTV</p>
+                <Users className="h-4 w-4 text-primary" />
               </div>
               <div className="flex items-center justify-between">
-                <p className="text-2xl font-bold text-green-900">₦{analyticsData.overview.customerLTV}</p>
+                <p className="text-2xl font-bold text-foreground">₦{analyticsData.overview.customerLTV}</p>
                 <div className={`flex items-center space-x-1 ${getChangeColor(analyticsData.overview.customerLTVChange)}`}>
                   {getChangeIcon(analyticsData.overview.customerLTVChange)}
                   <span className="text-sm font-medium">+{analyticsData.overview.customerLTVChange}%</span>
                 </div>
               </div>
-              <p className="text-xs text-green-600 mt-1">from last month</p>
+              <p className="text-xs text-muted-foreground mt-1">from last month</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-green-200">
+          <Card className="sabiops-card">
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-green-700">Repeat Rate</p>
-                <Package className="h-4 w-4 text-green-600" />
+                <p className="text-sm text-muted-foreground">Repeat Rate</p>
+                <Package className="h-4 w-4 text-primary" />
               </div>
               <div className="flex items-center justify-between">
-                <p className="text-2xl font-bold text-green-900">{analyticsData.overview.repeatCustomerRate}%</p>
+                <p className="text-2xl font-bold text-foreground">{analyticsData.overview.repeatCustomerRate}%</p>
                 <div className={`flex items-center space-x-1 ${getChangeColor(analyticsData.overview.repeatCustomerRateChange)}`}>
                   {getChangeIcon(analyticsData.overview.repeatCustomerRateChange)}
                   <span className="text-sm font-medium">{analyticsData.overview.repeatCustomerRateChange}%</span>
                 </div>
               </div>
-              <p className="text-xs text-green-600 mt-1">from last month</p>
+              <p className="text-xs text-muted-foreground mt-1">from last month</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Sales Trends */}
-        <Card className="bg-white border-green-200">
+        <Card className="sabiops-card">
           <CardHeader>
-            <CardTitle className="text-green-900 flex items-center space-x-2">
+            <CardTitle className="text-foreground flex items-center space-x-2">
               <BarChart3 className="h-5 w-5" />
               <span>Performance Metrics</span>
             </CardTitle>
@@ -167,11 +167,11 @@ export const AdvancedAnalytics = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {analyticsData.salesTrends.map((trend, index) => (
-                <div key={index} className="p-4 bg-green-50 rounded-lg">
+                <div key={index} className="p-4 bg-muted rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-green-700">{trend.metric}</p>
-                      <p className="text-xl font-bold text-green-900">{trend.value}</p>
+                      <p className="text-sm text-muted-foreground">{trend.metric}</p>
+                      <p className="text-xl font-bold text-foreground">{trend.value}</p>
                     </div>
                     <div className={`flex items-center space-x-1 ${trend.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
                       {trend.trend === 'up' ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
@@ -185,25 +185,25 @@ export const AdvancedAnalytics = () => {
         </Card>
 
         {/* Top Products */}
-        <Card className="bg-white border-green-200">
+        <Card className="sabiops-card">
           <CardHeader>
-            <CardTitle className="text-green-900">Top Performing Products</CardTitle>
+            <CardTitle className="text-foreground">Top Performing Products</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {analyticsData.topProducts.map((product, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">
                       {index + 1}
                     </div>
                     <div>
-                      <p className="font-medium text-green-900">{product.name}</p>
-                      <p className="text-sm text-green-700">{product.sales} sales</p>
+                      <p className="font-medium text-foreground">{product.name}</p>
+                      <p className="text-sm text-muted-foreground">{product.sales} sales</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-green-900">₦{product.revenue.toLocaleString()}</p>
+                    <p className="font-bold text-foreground">₦{product.revenue.toLocaleString()}</p>
                   </div>
                 </div>
               ))}
@@ -212,25 +212,25 @@ export const AdvancedAnalytics = () => {
         </Card>
 
         {/* Customer Segments */}
-        <Card className="bg-white border-green-200">
+        <Card className="sabiops-card">
           <CardHeader>
-            <CardTitle className="text-green-900">Customer Segments</CardTitle>
+            <CardTitle className="text-foreground">Customer Segments</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {analyticsData.customerSegments.map((segment, index) => (
-                <div key={index} className="p-4 bg-green-50 rounded-lg">
+                <div key={index} className="p-4 bg-muted rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium text-green-900">{segment.segment} Customers</h4>
-                    <span className="text-sm text-green-700">{segment.percentage}%</span>
+                    <h4 className="font-medium text-foreground">{segment.segment} Customers</h4>
+                    <span className="text-sm text-muted-foreground">{segment.percentage}%</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-green-700">{segment.customers} customers</span>
-                    <span className="font-bold text-green-900">₦{segment.revenue.toLocaleString()}</span>
+                    <span className="text-sm text-muted-foreground">{segment.customers} customers</span>
+                    <span className="font-bold text-foreground">₦{segment.revenue.toLocaleString()}</span>
                   </div>
-                  <div className="mt-2 w-full bg-green-200 rounded-full h-2">
+                  <div className="mt-2 w-full bg-border rounded-full h-2">
                     <div 
-                      className="bg-green-600 h-2 rounded-full" 
+                      className="bg-primary h-2 rounded-full" 
                       style={{ width: `${segment.percentage}%` }}
                     ></div>
                   </div>
