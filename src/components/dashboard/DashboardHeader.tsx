@@ -183,6 +183,11 @@ export const DashboardHeader = () => {
                 </div>
                 
                 <div className="space-y-4">
+                  {/* Notifications */}
+                  <div className="pb-2 border-b border-border">
+                    <NotificationCenter />
+                  </div>
+                  
                   {/* Search Bar - Only for paid plans */}
                   {subscription?.plan !== 'free' && (
                     <div className="w-full">
@@ -250,11 +255,6 @@ export const DashboardHeader = () => {
                       <LogOut className="h-4 w-4 mr-2" />
                       Logout
                     </Button>
-                  </div>
-                  
-                  {/* Notifications */}
-                  <div className="pt-2 border-t border-border">
-                    <NotificationCenter />
                   </div>
                   
                   {/* User Info */}
