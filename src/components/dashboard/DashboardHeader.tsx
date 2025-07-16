@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Bell, MessageCircle, Crown, Search, Menu, X, Bed, BarChart3, History, LogOut } from 'lucide-react';
+import { Bell, MessageCircle, Crown, Search, Menu, Bed, BarChart3, History, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
@@ -169,16 +169,11 @@ export const DashboardHeader = () => {
                   <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-background border-border">
+              <SheetContent side="right" className="w-80 bg-background border-border dark:bg-background dark:border-border">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg font-semibold text-foreground">Menu</h2>
                   <div className="flex items-center gap-2">
                     <ThemeToggle showText />
-                    <SheetClose asChild>
-                      <Button variant="ghost" size="sm" className="text-foreground hover:bg-accent">
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </SheetClose>
                   </div>
                 </div>
                 
