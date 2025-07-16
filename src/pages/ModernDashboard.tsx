@@ -65,15 +65,15 @@ const ModernDashboard = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-purple-50">
-        <div className="text-center p-8 bg-white rounded-2xl shadow-lg">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="text-center p-8 bg-card rounded-2xl shadow-lg border">
           <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center">
             <span className="text-white font-bold text-xl">S</span>
           </div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent mb-2">
             Please Login
           </h1>
-          <p className="text-gray-600">Access your SabiOps dashboard</p>
+          <p className="text-muted-foreground">Access your SabiOps dashboard</p>
         </div>
       </div>
     );
@@ -85,21 +85,21 @@ const ModernDashboard = () => {
       <DashboardHeader />
 
       {/* Main Dashboard Content */}
-      <div className="p-4 space-y-6 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen">
+      <div className="p-4 space-y-6 bg-background min-h-screen">
         {/* Subscription Status */}
         <ModernSubscriptionStatus onUpgrade={() => setUpgradeModalOpen(true)} />
 
         {/* Usage Tracker for Free Plan */}
-        <div className="bg-gradient-to-r from-green-100 to-green-200 rounded-xl p-1">
-          <div className="bg-white rounded-lg">
+        <div className="bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-1">
+          <div className="bg-card rounded-lg border">
             <UsageTracker />
           </div>
         </div>
 
         {/* Export Buttons */}
         <div className="flex justify-end">
-          <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl p-1">
-            <div className="bg-white rounded-lg">
+          <div className="bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-1">
+            <div className="bg-card rounded-lg border">
               <ExportButtons type="dashboard" />
             </div>
           </div>
@@ -118,8 +118,8 @@ const ModernDashboard = () => {
         {role === 'Owner' && subscription?.plan !== 'free' && (
           <>
             {/* Referral Widget */}
-            <div className="bg-gradient-to-r from-green-200 to-teal-200 rounded-xl p-1">
-              <div className="bg-white rounded-lg">
+            <div className="bg-gradient-to-r from-green-200 to-teal-200 dark:from-green-900/20 dark:to-teal-900/20 rounded-xl p-1">
+              <div className="bg-card rounded-lg border">
                 <ReferralWidget 
                   referralData={dashboardData?.referral_earnings}
                   loading={loading}
@@ -129,8 +129,8 @@ const ModernDashboard = () => {
             </div>
 
             {/* Team Management */}
-            <div className="bg-gradient-to-r from-purple-200 to-pink-200 rounded-xl p-1">
-              <div className="bg-white rounded-lg">
+            <div className="bg-gradient-to-r from-purple-200 to-pink-200 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-1">
+              <div className="bg-card rounded-lg border">
                 <TeamManagement 
                   teamData={dashboardData?.team}
                   loading={loading}
@@ -141,8 +141,8 @@ const ModernDashboard = () => {
         )}
 
         {/* Sync Status */}
-        <div className="bg-gradient-to-r from-blue-200 to-indigo-200 rounded-xl p-1">
-          <div className="bg-white rounded-lg">
+        <div className="bg-gradient-to-r from-blue-200 to-indigo-200 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-1">
+          <div className="bg-card rounded-lg border">
             <SyncStatus />
           </div>
         </div>
